@@ -8166,7 +8166,7 @@
           }
         }
         var state = getState();
-        setAccess(state !== "accepted");
+        setAccess(state === "accepted");
         if (state === "under20") showDenied();
         confirmButton.addEventListener("click", function () {
           setState("accepted");
