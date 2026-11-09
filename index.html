@@ -8170,7 +8170,7 @@
         if (state === "under20") showDenied();
         confirmButton.addEventListener("click", function () {
           setState("accepted");
-          setAccess(false);
+          setAccess(true);
         });
         declineButton.addEventListener("click", function () {
           setState("under20");
