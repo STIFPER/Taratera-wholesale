@@ -13,7 +13,7 @@
     <link rel="icon" type="image/png" sizes="48x48" href="assets/pwa/favicon-48.png" />
     <link rel="apple-touch-icon" href="assets/pwa/apple-touch-icon.png" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&family=Lexend+Deca:wght@300;400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800;900&family=Lexend+Deca:wght@300;400;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -6784,32 +6784,42 @@
       body[data-age-confirmed="false"] > :not(#ageGate) { visibility: hidden; pointer-events: none; }
       body[data-age-confirmed="false"] { overflow: hidden; }
       .age-gate[hidden] { display: none !important; }
-      .age-gate { position: fixed; inset: 0; z-index: 100000; display: grid; place-items: center; padding: 20px; background: rgba(13, 35, 31, .78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
-      .age-gate-card { width: min(100%, 520px); padding: clamp(26px, 6vw, 44px); border: 1px solid rgba(255,255,255,.9); border-radius: 28px; background: linear-gradient(150deg, rgba(255,255,255,.96), rgba(233,241,239,.97)); box-shadow: 0 28px 80px rgba(0,0,0,.26); color: #44625d; text-align: center; }
-      .age-gate-brand { margin: 0 0 10px; color: #25877a; font: 800 12px Montserrat, sans-serif; letter-spacing: .16em; text-transform: uppercase; }
-      .age-gate-card h1 { margin: 0 0 14px; color: #1d6f64; font: 800 clamp(25px, 5vw, 34px)/1.15 Montserrat, sans-serif; }
-      .age-gate-copy { margin: 0 auto 22px; max-width: 420px; font: 400 15px/1.65 "Lexend Deca", sans-serif; }
-      .age-gate-actions { display: grid; gap: 10px; }
-      .age-gate-actions button { min-height: 50px; padding: 12px 18px; border: 0; border-radius: 999px; font: 600 14px/1.4 "Lexend Deca", sans-serif; cursor: pointer; }
+      .age-gate { position: fixed; inset: 0; z-index: 100000; display: grid; place-items: center; padding: 24px; background: rgba(13, 35, 31, .78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+      .age-gate-card { width: min(100%, 680px); max-height: calc(100dvh - 48px); overflow-y: auto; padding: clamp(28px, 5vw, 48px) clamp(24px, 6vw, 64px); border: 1px solid rgba(255,255,255,.9); border-radius: 30px; background: linear-gradient(150deg, rgba(255,255,255,.97), rgba(233,241,239,.98)); box-shadow: 0 28px 80px rgba(0,0,0,.26); color: #44625d; text-align: center; }
+      .age-gate-brand { margin: 0 0 14px; color: #25877a; font: 800 12px Montserrat, sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+      .age-gate-card h1 { display: grid; gap: 2px; margin: 0 0 20px; color: #1d6f64; font-family: Montserrat, "Noto Sans Thai", sans-serif; font-weight: 800; line-height: 1.2; }
+      .age-gate-title-en { font-size: clamp(25px, 4vw, 34px); }
+      .age-gate-title-th { font-family: "Noto Sans Thai", sans-serif; font-size: clamp(23px, 3.5vw, 29px); }
+      .age-gate-copy { display: grid; gap: 4px; margin: 0 auto 26px; max-width: 560px; font: 400 15px/1.75 "Lexend Deca", "Noto Sans Thai", sans-serif; }
+      .age-gate-copy-th { font-family: "Noto Sans Thai", sans-serif; }
+      .age-gate-actions { display: grid; gap: 12px; max-width: 560px; margin: 0 auto; }
+      .age-gate-actions button { display: grid; place-content: center; gap: 2px; min-height: 64px; padding: 10px 20px; border: 0; border-radius: 999px; font-family: "Lexend Deca", "Noto Sans Thai", sans-serif; font-size: 15px; font-weight: 600; line-height: 1.45; cursor: pointer; }
+      .age-gate-actions button span:last-child { font-family: "Noto Sans Thai", sans-serif; font-size: 14px; }
       .age-gate-confirm { background: linear-gradient(180deg, #25877a, #1d6f64); color: #fff; box-shadow: 0 10px 24px rgba(31,116,104,.24); }
       .age-gate-decline { background: rgba(29,111,100,.08); color: #1d6f64; }
       .age-gate-actions button:focus-visible { outline: 3px solid #f0a840; outline-offset: 3px; }
-      .age-gate-note { margin: 18px 0 0; color: #607771; font: 400 11px/1.6 "Lexend Deca", sans-serif; }
-      .age-gate-denied { margin: 18px 0 0; color: #1d6f64; font: 600 14px/1.6 "Lexend Deca", sans-serif; }
-      @media (max-width: 480px) { .age-gate { padding: 14px; } .age-gate-card { border-radius: 22px; } }
+      .age-gate-note { display: grid; gap: 5px; max-width: 560px; margin: 22px auto 0; color: #607771; font: 400 12px/1.7 "Lexend Deca", "Noto Sans Thai", sans-serif; }
+      .age-gate-note-th { font-family: "Noto Sans Thai", sans-serif; }
+      .age-gate-denied { margin: 20px 0 0; color: #1d6f64; font: 600 14px/1.7 "Lexend Deca", "Noto Sans Thai", sans-serif; }
+      @media (max-width: 480px) {
+        .age-gate { padding: 14px; }
+        .age-gate-card { max-height: calc(100dvh - 28px); padding: 28px 20px; border-radius: 24px; }
+        .age-gate-actions button { min-height: 62px; padding-inline: 14px; }
+        .age-gate-note { font-size: 11px; }
+      }
     </style>
 </head>
   <body data-age-confirmed="false">
   <section class="age-gate" id="ageGate" role="dialog" aria-modal="true" aria-labelledby="ageGateTitle" aria-describedby="ageGateDescription">
     <div class="age-gate-card">
       <p class="age-gate-brand">TARATERA FLOWERS</p>
-      <h1 id="ageGateTitle">Age confirmation · ยืนยันอายุ</h1>
-      <p class="age-gate-copy" id="ageGateDescription">By continuing, you confirm that you are 20 years of age or older.<br>หากดำเนินการต่อ แสดงว่าคุณยืนยันว่ามีอายุครบ 20 ปีบริบูรณ์แล้ว</p>
+      <h1 id="ageGateTitle"><span class="age-gate-title-en">Age confirmation</span><span class="age-gate-title-th" lang="th">ยืนยันอายุ</span></h1>
+      <p class="age-gate-copy" id="ageGateDescription"><span>By continuing, you confirm that you are 20 years of age or older.</span><span class="age-gate-copy-th" lang="th">หากดำเนินการต่อ แสดงว่าคุณยืนยันว่ามีอายุครบ 20 ปีบริบูรณ์แล้ว</span></p>
       <div class="age-gate-actions">
-        <button class="age-gate-confirm" id="ageGateConfirm" type="button">I am 20 or older · ฉันอายุครบ 20 ปีบริบูรณ์แล้ว</button>
-        <button class="age-gate-decline" id="ageGateDecline" type="button">I am under 20 · ฉันอายุต่ำกว่า 20 ปี</button>
+        <button class="age-gate-confirm" id="ageGateConfirm" type="button"><span>I am 20 or older</span><span lang="th">ฉันอายุครบ 20 ปีบริบูรณ์แล้ว</span></button>
+        <button class="age-gate-decline" id="ageGateDecline" type="button"><span>I am under 20</span><span lang="th">ฉันอายุต่ำกว่า 20 ปี</span></button>
       </div>
-      <p class="age-gate-note">This is a self-declaration. It does not verify identity or replace applicable legal requirements.<br>เป็นการยืนยันด้วยตนเอง ไม่ใช่การตรวจสอบตัวตนหรือการรับรองว่าปฏิบัติตามข้อกำหนดทางกฎหมายครบถ้วน</p>
+      <p class="age-gate-note"><span>This is a self-declaration. It does not verify identity or replace applicable legal requirements.</span><span class="age-gate-note-th" lang="th">เป็นการยืนยันด้วยตนเอง ไม่ใช่การตรวจสอบตัวตนหรือการรับรองว่าปฏิบัติตามข้อกำหนดทางกฎหมายครบถ้วน</span></p>
       <p class="age-gate-denied" id="ageGateDenied" tabindex="-1" hidden>Access is limited to visitors aged 20 or older.<br>เว็บไซต์นี้สำหรับผู้มีอายุครบ 20 ปีบริบูรณ์ขึ้นไปเท่านั้น</p>
     </div>
   </section>
