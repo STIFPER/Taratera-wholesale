@@ -6779,8 +6779,41 @@
         background: none;
       }
     </style>
-  </head>
-  <body>
+  
+    <style>
+      body[data-age-confirmed="false"] > :not(#ageGate) { visibility: hidden; pointer-events: none; }
+      body[data-age-confirmed="false"] { overflow: hidden; }
+      .age-gate[hidden] { display: none !important; }
+      .age-gate { position: fixed; inset: 0; z-index: 100000; display: grid; place-items: center; padding: 20px; background: rgba(13, 35, 31, .78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+      .age-gate-card { width: min(100%, 520px); padding: clamp(26px, 6vw, 44px); border: 1px solid rgba(255,255,255,.9); border-radius: 28px; background: linear-gradient(150deg, rgba(255,255,255,.96), rgba(233,241,239,.97)); box-shadow: 0 28px 80px rgba(0,0,0,.26); color: #44625d; text-align: center; }
+      .age-gate-brand { margin: 0 0 10px; color: #25877a; font: 800 12px Montserrat, sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+      .age-gate-card h1 { margin: 0 0 14px; color: #1d6f64; font: 800 clamp(25px, 5vw, 34px)/1.15 Montserrat, sans-serif; }
+      .age-gate-copy { margin: 0 auto 22px; max-width: 420px; font: 400 15px/1.65 "Lexend Deca", sans-serif; }
+      .age-gate-actions { display: grid; gap: 10px; }
+      .age-gate-actions button { min-height: 50px; padding: 12px 18px; border: 0; border-radius: 999px; font: 600 14px/1.4 "Lexend Deca", sans-serif; cursor: pointer; }
+      .age-gate-confirm { background: linear-gradient(180deg, #25877a, #1d6f64); color: #fff; box-shadow: 0 10px 24px rgba(31,116,104,.24); }
+      .age-gate-decline { background: rgba(29,111,100,.08); color: #1d6f64; }
+      .age-gate-actions button:focus-visible { outline: 3px solid #f0a840; outline-offset: 3px; }
+      .age-gate-note { margin: 18px 0 0; color: #607771; font: 400 11px/1.6 "Lexend Deca", sans-serif; }
+      .age-gate-denied { margin: 18px 0 0; color: #1d6f64; font: 600 14px/1.6 "Lexend Deca", sans-serif; }
+      @media (max-width: 480px) { .age-gate { padding: 14px; } .age-gate-card { border-radius: 22px; } }
+    </style>
+</head>
+  <body data-age-confirmed="false">
+  <section class="age-gate" id="ageGate" role="dialog" aria-modal="true" aria-labelledby="ageGateTitle" aria-describedby="ageGateDescription">
+    <div class="age-gate-card">
+      <p class="age-gate-brand">TARATERA FLOWERS</p>
+      <h1 id="ageGateTitle">Age confirmation · ยืนยันอายุ</h1>
+      <p class="age-gate-copy" id="ageGateDescription">By continuing, you confirm that you are 20 years of age or older.<br>หากดำเนินการต่อ แสดงว่าคุณยืนยันว่ามีอายุครบ 20 ปีบริบูรณ์แล้ว</p>
+      <div class="age-gate-actions">
+        <button class="age-gate-confirm" id="ageGateConfirm" type="button">I am 20 or older · ฉันอายุครบ 20 ปีบริบูรณ์แล้ว</button>
+        <button class="age-gate-decline" id="ageGateDecline" type="button">I am under 20 · ฉันอายุต่ำกว่า 20 ปี</button>
+      </div>
+      <p class="age-gate-note">This is a self-declaration. It does not verify identity or replace applicable legal requirements.<br>เป็นการยืนยันด้วยตนเอง ไม่ใช่การตรวจสอบตัวตนหรือการรับรองว่าปฏิบัติตามข้อกำหนดทางกฎหมายครบถ้วน</p>
+      <p class="age-gate-denied" id="ageGateDenied" tabindex="-1" hidden>Access is limited to visitors aged 20 or older.<br>เว็บไซต์นี้สำหรับผู้มีอายุครบ 20 ปีบริบูรณ์ขึ้นไปเท่านั้น</p>
+    </div>
+  </section>
+
     <script>
       /* phone panes: pick the page before the first layout, so pictures on the hidden pages are not downloaded (lazy images stay lazy) */
       (function () {
@@ -8099,5 +8132,60 @@
         }, { passive: false });
       })();
     </script>
-  </body>
+  
+    <script>
+      (function () {
+        var gate = document.getElementById("ageGate");
+        if (!gate) return;
+        var confirmButton = document.getElementById("ageGateConfirm");
+        var declineButton = document.getElementById("ageGateDecline");
+        var deniedMessage = document.getElementById("ageGateDenied");
+        var key = "tt-age-confirmation-v1";
+        var page = Array.prototype.filter.call(document.body.children, function (el) { return el !== gate; });
+        function getState() { try { return sessionStorage.getItem(key) || ""; } catch (e) { return ""; } }
+        function setState(value) { try { sessionStorage.setItem(key, value); } catch (e) {} }
+        function showDenied() {
+          deniedMessage.hidden = false;
+          confirmButton.hidden = true;
+          declineButton.hidden = true;
+          deniedMessage.focus();
+        }
+        function setAccess(allowed) {
+          document.body.setAttribute("data-age-confirmed", allowed ? "true" : "false");
+          gate.hidden = allowed;
+          page.forEach(function (el) {
+            el.inert = !allowed;
+            if (allowed) el.removeAttribute("aria-hidden");
+            else el.setAttribute("aria-hidden", "true");
+          });
+          if (!allowed) {
+            document.body.style.overflow = "hidden";
+            confirmButton.focus();
+          } else {
+            document.body.style.overflow = "";
+          }
+        }
+        var state = getState();
+        setAccess(state !== "accepted");
+        if (state === "under20") showDenied();
+        confirmButton.addEventListener("click", function () {
+          setState("accepted");
+          setAccess(false);
+        });
+        declineButton.addEventListener("click", function () {
+          setState("under20");
+          showDenied();
+        });
+        gate.addEventListener("keydown", function (event) {
+          if (event.key === "Escape") event.preventDefault();
+          if (event.key !== "Tab" || confirmButton.hidden) return;
+          if (event.shiftKey && document.activeElement === confirmButton) {
+            event.preventDefault(); declineButton.focus();
+          } else if (!event.shiftKey && document.activeElement === declineButton) {
+            event.preventDefault(); confirmButton.focus();
+          }
+        });
+      })();
+    </script>
+</body>
 </html>
